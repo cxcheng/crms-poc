@@ -1,0 +1,56 @@
+type Query {
+    info(uens: [UEN]): [AllotmentInfo]
+    allotments(uen: UEN): [Allotment]
+}
+
+input UEN {
+    nric: String
+    name: String
+    mobile: String
+    postalCode: String
+}
+
+enum MhaAddressType {
+    APARTMENT_BLK
+    WITHOUT_APARTMENT_BLK
+    REVERSE_OF_APARTMENT_BLK_STREET_NAME
+    OVERSEAS_ADDRESS
+    PRIVATE_FLATS_WITH_APARTMENT_BLK
+    CO_APARTMENT_BLK
+    CO_WITHOUT_APARTMENT_BLK
+    QUARTER_ADDRESS
+    ISLAND_ADDRESS
+    SPACE
+}
+
+type MhaAddress {
+    type: MhaAddressType!
+    blockNo: String
+    streetName: String
+    floorNo: String
+    unitNo: String
+    buildingName: String
+    postalCode: String!
+}
+
+type AllotmentInfo {
+    nric: String!
+    name: String!
+    latestCitizenship: String!
+    latestAddress: MhaAddress!
+    exist: Boolean!
+    allotments: [Allotment]
+}
+
+type Allotment {
+    scheme: String!
+    subScheme: String
+    year: Int!
+    cycle: String!
+    amount: Float!
+    address: MhaAddress
+}
+
+
+
+
