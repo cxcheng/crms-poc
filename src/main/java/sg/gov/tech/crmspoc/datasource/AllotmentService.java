@@ -1,6 +1,6 @@
-package sg.gov.tech.crmspoc.dao;
+package sg.gov.tech.crmspoc.datasource;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import sg.gov.tech.crmspoc.value.Allotment;
 import sg.gov.tech.crmspoc.value.MhaAddress;
 import sg.gov.tech.crmspoc.value.MhaAddressTypeEnum;
@@ -8,9 +8,9 @@ import sg.gov.tech.crmspoc.value.MhaAddressTypeEnum;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class AllotmentDAO {
-    public List<Allotment> findByNRIC(String nric) {
+@Service
+public class AllotmentService {
+    public List<Allotment> findAllotments(String nric) {
         // return dummy
         List<Allotment> results = new ArrayList<Allotment>();
 
@@ -30,9 +30,5 @@ public class AllotmentDAO {
 
         results.add(dummyAllotment);
         return results;
-    }
-
-    public List<Allotment> findByNameMobilePostalCode(String name, String mobile, String postalCode) {
-        return new ArrayList<Allotment>();
     }
 }

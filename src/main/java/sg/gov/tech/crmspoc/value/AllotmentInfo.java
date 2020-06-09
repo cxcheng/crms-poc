@@ -8,7 +8,7 @@ public class AllotmentInfo {
     @NonNull private String nric;
     @NonNull private String name;
     @NonNull private String latestCitizenship;
-    private MhaAddress latestAddress;
+    //private MhaAddress latestAddress;
     private boolean exist;
-    private Iterable<Allotment> allotments;
+    //private Iterable<Allotment> allotments;
 }
