@@ -43,9 +43,6 @@ public class PersonService {
     }
 
     public Person getByNRIC(String nric) {
-        if (!Util.validateNric(nric)) {
-            log.warn("Error validating NRIC " + nric);
-        }
         WebClient.ResponseSpec resp = webClient
             .get()
             .uri(uriBuilder -> uriBuilder.path("datasource/search")
