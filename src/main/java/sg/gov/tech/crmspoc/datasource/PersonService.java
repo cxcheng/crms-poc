@@ -6,6 +6,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.DefaultUriBuilderFactory;
+import org.springframework.web.util.UriBuilder;
 import sg.gov.tech.crmspoc.datasource.response.FindPersons;
 import sg.gov.tech.crmspoc.datasource.response.GetAddress;
 import sg.gov.tech.crmspoc.datasource.response.GetPerson;
@@ -13,8 +15,10 @@ import sg.gov.tech.crmspoc.value.MhaAddress;
 import sg.gov.tech.crmspoc.value.Person;
 
 import javax.annotation.PostConstruct;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Log4j2
@@ -53,14 +57,13 @@ public class PersonService {
     }
 
     public List<Person> findByName(String name) {
-
-        WebClient.ResponseSpec resp = webClient
-            .get()
-            .uri(uriBuilder -> uriBuilder.path("datasource/search")
-                .queryParam("name", name)
-                .build())
-            .retrieve();
-        return resp.bodyToFlux(FindPersons.class).blockLast().getData();
+            WebClient.ResponseSpec resp = webClient
+                .get()
+                .uri(uriBuilder -> uriBuilder.path("datasource/search")
+                    .queryParam("name", name)
+                    .build())
+                .retrieve();
+            return resp.bodyToFlux(FindPersons.class).blockLast().getData();
     }
 
     public MhaAddress getAddress(String personId, String asOfDate) {
@@ -68,7 +71,7 @@ public class PersonService {
         if (asOfDate != null) {
             resp = webClient
                 .get()
-                .uri(uriBuilder -> uriBuilder.path("datasource/search")
+                .uri(uriBuilder -> uriBuilder
                     .path("/datasource/persons/{id}/address")
                     .queryParam("asOf", asOfDate)
                     .build(personId))
@@ -83,5 +86,4 @@ public class PersonService {
         }
         return resp.bodyToMono(GetAddress.class).block().getData();
     }
-
 }
