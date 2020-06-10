@@ -1,42 +1,11 @@
 type Query {
-    info(uens: [UEN]): [AllotmentInfo]
-}
-
-query FindByUENs($uens: [UEN]) {
-    info(uens: $uens){
-        nric
-        name
-        exist
-        latestAddress {
-            blockNo
-            streetName
-            floorNo
-            unitNo
-            buildingName
-            postalCode
-        }
-        latestCitizenship
-        allotments {
-            scheme
-            subScheme
-            year
-            address {
-                blockNo
-                streetName
-                floorNo
-                unitNo
-                buildingName
-                postalCode
-            }
-        }
-    }
+    info(uens: [UEN]): [Person]
 }
 
 input UEN {
     nric: String
     name: String
     mobile: String
-    postalCode: String
 }
 
 enum MhaAddressType {
@@ -53,29 +22,32 @@ enum MhaAddressType {
 }
 
 type MhaAddress {
-    type: MhaAddressType!
-    blockNo: String
+    type: MhaAddressType
+    blockNumber: String
+    streetCode: String
     streetName: String
-    floorNo: String
-    unitNo: String
+    floor: String
+    unit: String
     buildingName: String
-    postalCode: String!
+    postalCode: String
+    newPostalCode: String
 }
 
-type AllotmentInfo {
+type Person {
+    id: ID!
     nric: String!
     name: String!
-    latestCitizenship: String!
-    latestAddress: MhaAddress!
-    exist: Boolean!
+    nationalityType: String!
+    address: MhaAddress
     allotments: [Allotment]
 }
 
 type Allotment {
+    id: ID!
     scheme: String!
     subScheme: String!
     year: Int!
     cycle: String!
     amount: Float!
-    address: MhaAddress!
+    address: MhaAddress
 }

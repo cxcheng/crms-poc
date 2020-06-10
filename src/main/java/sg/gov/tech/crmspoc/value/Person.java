@@ -8,16 +8,13 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Allotment {
-
+public class Person {
     @NonNull
     private String id;
     @NonNull
-    private String scheme;
-    private String subScheme;
-    private int year;
-    private String cycle;
-    private Double amount;
-    private MhaAddress address;
-
+    private String nric;
+    @NonNull
+    private String name;
+    @NonNull
+    private String nationalityType;
 }

@@ -1,34 +1,43 @@
 package sg.gov.tech.crmspoc.datasource;
 
+import lombok.Data;
+import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import sg.gov.tech.crmspoc.datasource.response.FindAllotments;
 import sg.gov.tech.crmspoc.value.Allotment;
-import sg.gov.tech.crmspoc.value.MhaAddress;
-import sg.gov.tech.crmspoc.value.MhaAddressTypeEnum;
 
-import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
 public class AllotmentService {
-    public List<Allotment> findAllotments(String nric) {
-        // return dummy
-        List<Allotment> results = new ArrayList<Allotment>();
 
-        Allotment dummyAllotment = new Allotment("scheme " + nric,
-            "subScheme " + nric,
-            2021,
-            "cycle 2",
-            1234.56,
-            new MhaAddress(MhaAddressTypeEnum.fromString("A"),
-                "123",
-                "Jalan Jalan",
-                "999",
-                "9999",
-                "Babylon",
-                "123456"));
+    @Value("${service.allotment.url}")
+    private String baseUrl;
 
+    private WebClient webClient;
 
-        results.add(dummyAllotment);
-        return results;
+    @PostConstruct
+    public void init() {
+        webClient = WebClient
+            .builder()
+            .baseUrl(baseUrl)
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .build();
+    }
+
+    public List<Allotment> findAllotments(String personId) {
+        WebClient.ResponseSpec resp = webClient
+            .get()
+            .uri(uriBuilder -> uriBuilder
+                .path("/allotment/persons/{id}/allotment_results")
+                .build(personId))
+            .retrieve();
+        return resp.bodyToFlux(FindAllotments.class).blockLast().getData();
     }
 }

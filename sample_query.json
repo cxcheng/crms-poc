@@ -1,0 +1,34 @@
+{
+  info(uens: [{nric: "S1111111A"}]) {
+    nric
+    name
+    address {
+      blockNumber
+      streetCode
+      streetName
+      floor
+      unit
+      buildingName
+      postalCode
+      newPostalCode
+    }
+    nationalityType
+    allotments {
+      scheme
+      subScheme
+      year
+      address {
+	blockNumber
+        streetCode
+        streetName
+    	floor
+      	unit
+      	buildingName
+      	postalCode
+      	newPostalCode
+      }
+    }
+  }
+}
+
+

@@ -3,8 +3,8 @@ package sg.gov.tech.crmspoc.resolver;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sg.gov.tech.crmspoc.datasource.AllotmentInfoService;
-import sg.gov.tech.crmspoc.value.AllotmentInfo;
+import sg.gov.tech.crmspoc.datasource.PersonService;
+import sg.gov.tech.crmspoc.value.Person;
 import sg.gov.tech.crmspoc.value.UEN;
 
 import java.util.ArrayList;
@@ -14,16 +14,16 @@ import java.util.List;
 public class QueryResolver implements GraphQLQueryResolver {
 
     @Autowired
-    private AllotmentInfoService allotmentInfoService;
+    private PersonService personService;
 
-    public Iterable<AllotmentInfo> getInfo(Iterable<UEN> uens) {
-        List<AllotmentInfo> results = new ArrayList<AllotmentInfo>();
+    public Iterable<Person> getInfo(Iterable<UEN> uens) {
+        List<Person> results = new ArrayList<Person>();
 
         for (UEN uen : uens) {
             if (uen.getNric() != null) {
-                results.add(allotmentInfoService.getByNRIC(uen.getNric()));
-            } else {
-                results.addAll(allotmentInfoService.findByNameMobilePostalCode(uen.getName(), uen.getMobile(), uen.getPostalCode()));
+                results.add(personService.getByNRIC(uen.getNric()));
+            } else if (uen.getName() != null) {
+                results.addAll(personService.findByName(uen.getName()));
             }
         }
 
