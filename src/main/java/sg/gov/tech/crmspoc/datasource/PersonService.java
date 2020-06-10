@@ -63,14 +63,14 @@ public class PersonService {
         return resp.bodyToFlux(FindPersons.class).blockLast().getData();
     }
 
-    public MhaAddress getAddress(String personId, Optional<String> asOfDate) {
+    public MhaAddress getAddress(String personId, String asOfDate) {
         WebClient.ResponseSpec resp;
         if (asOfDate != null) {
             resp = webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder.path("datasource/search")
                     .path("/datasource/persons/{id}/address")
-                    .queryParam("asof", asOfDate)
+                    .queryParam("asOf", asOfDate)
                     .build(personId))
                 .retrieve();
         } else {

@@ -1,13 +1,10 @@
 package sg.gov.tech.crmspoc.datasource;
 
-import lombok.Data;
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 import sg.gov.tech.crmspoc.datasource.response.FindAllotments;
 import sg.gov.tech.crmspoc.value.Allotment;
 
@@ -38,6 +35,8 @@ public class AllotmentService {
                 .path("/allotment/persons/{id}/allotment_results")
                 .build(personId))
             .retrieve();
-        return resp.bodyToFlux(FindAllotments.class).blockLast().getData();
+        List<Allotment> results = resp.bodyToFlux(FindAllotments.class).blockLast().getData();
+        results.forEach(allotment -> allotment.setPersonId(personId));
+        return results;
     }
 }

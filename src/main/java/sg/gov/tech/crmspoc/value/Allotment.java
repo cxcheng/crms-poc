@@ -13,11 +13,12 @@ public class Allotment {
     @NonNull
     private String id;
     @NonNull
+    private String personId;
+    @NonNull
     private String scheme;
     private String subScheme;
     private int year;
     private String cycle;
     private Double amount;
-    private MhaAddress address;
 
 }
